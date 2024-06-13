@@ -1,12 +1,17 @@
 import { Module } from '@nestjs/common';
-import { HealthCheckController } from '@core/healthcheck/healthcheck.controller';
 import { SwaggerModule } from '@common/swagger/swagger.module';
 import { InfraModule } from '@config/infra.module';
+import { GracefulShutdownModule } from 'nestjs-graceful-shutdown';
+import { HealthCheckController } from './modules/healthcheck/healthcheck.controller';
+import { LoginController } from './modules/login/login.controller';
 
-const restImports = [InfraModule, SwaggerModule];
+const restImports = [
+  InfraModule,
+  SwaggerModule,
+];
 
 @Module({
-  imports: [...restImports],
-  controllers: [HealthCheckController],
+  imports: [GracefulShutdownModule.forRoot(), ...restImports],
+  controllers: [HealthCheckController, LoginController],
 })
 export class AppModule {}
